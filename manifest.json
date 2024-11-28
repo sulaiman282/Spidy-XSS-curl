@@ -1,18 +1,25 @@
 {
   "manifest_version": 3,
-  "name": "Spidy XSS",
+  "name": "XSS Testing Extension",
   "version": "1.0",
-  "description": "Spidy XSS is a lightweight Chrome extension designed to help developers and security testers analyze and identify potential XSS (Cross-Site Scripting) vulnerabilities in their applications. With a user-friendly interface, it simplifies the process of testing curl commands and HTTP requests for XSS findings, making security testing more efficient and accessible.",
-  "permissions": ["storage", "webRequest", "webRequestBlocking"],
-  "host_permissions": ["<all_urls>"],
+  "description": "Test XSS vulnerabilities",
+  "permissions": [
+    "tabs"
+  ],
   "background": {
     "service_worker": "background.js"
   },
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "",
     "default_icon": "icon.png"
   },
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
   "icons": {
-    "48": "icon.png"
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
   }
 }

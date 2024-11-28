@@ -62,6 +62,56 @@ let profiles = {
     isTesting: false,
     status: "Not Started",
   },
+  profile6: {
+    curlInput: "",
+    concurrent: 1,
+    level: "basic",
+    results: [],
+    tested: 0,
+    found: 0,
+    isTesting: false,
+    status: "Not Started",
+  },
+  profile7: {
+    curlInput: "",
+    concurrent: 1,
+    level: "basic",
+    results: [],
+    tested: 0,
+    found: 0,
+    isTesting: false,
+    status: "Not Started",
+  },
+  profile8: {
+    curlInput: "",
+    concurrent: 1,
+    level: "basic",
+    results: [],
+    tested: 0,
+    found: 0,
+    isTesting: false,
+    status: "Not Started",
+  },
+  profile9: {
+    curlInput: "",
+    concurrent: 1,
+    level: "basic",
+    results: [],
+    tested: 0,
+    found: 0,
+    isTesting: false,
+    status: "Not Started",
+  },
+  profile10: {
+    curlInput: "",
+    concurrent: 1,
+    level: "basic",
+    results: [],
+    tested: 0,
+    found: 0,
+    isTesting: false,
+    status: "Not Started",
+  }
 };
 
 // Load profile data and status when popup is opened
@@ -83,6 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
 // Set Active Option
 function setActiveOption(selector, value, attribute = "data-value") {
   document
@@ -112,6 +163,7 @@ document.querySelectorAll(".level-option").forEach((btn) => {
     );
   });
 });
+
 // Start Test
 startBtn.addEventListener("click", async () => {
   const curlText = curlInput.value.trim();
@@ -211,16 +263,6 @@ function loadProfileData(profile) {
     testedCount.innerText = 0;
     foundCount.innerText = 0;
   }
-}
-
-// Set Active Option
-function setActiveOption(selector, value, attribute = "data-value") {
-  document
-    .querySelectorAll(selector)
-    .forEach((btn) => btn.classList.remove("active"));
-  document
-    .querySelector(`${selector}[${attribute}="${value}"]`)
-    .classList.add("active");
 }
 
 // Reset Live Results and Stats

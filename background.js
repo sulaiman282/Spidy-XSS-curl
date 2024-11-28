@@ -1,88 +1,19 @@
-let tests = {}; // Store tests for each profile
-let isTesting = false;
-
-// Listen for messages from popup
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.command === "startTest") {
-    const { profile, curlInput, concurrent, level } = message.data;
-    startTest(profile, curlInput, concurrent, level);
-    sendResponse({ status: "started" });
-  } else if (message.command === "cancelTest") {
-    cancelTest();
-    sendResponse({ status: "cancelled" });
-  } else if (message.command === "getStatus") {
-    sendResponse({ status: isTesting, tests });
-  }
+// Listen for a click on the extension icon
+chrome.action.onClicked.addListener((tab) => {
+  // Create a new tab and open the 'popup.html' from the extension's directory
+  chrome.tabs.create({
+    url: chrome.runtime.getURL("popup.html") // This will open the popup.html as a new tab
+  });
 });
 
-function startTest(profile, curlInput, concurrent, level) {
-  isTesting = true;
-  if (!tests[profile]) {
-    tests[profile] = { curlInput, concurrent, level, results: [], tested: 0, found: 0 };
-  }
+// Optional: Handling the case where you might want to manage or log the tab
+chrome.tabs.onCreated.addListener((newTab) => {
+  console.log('New tab created: ', newTab);
+  // You can add any custom logic here to handle the new tab, like updating the UI or storing tab details.
+});
 
-  const payloads = []; // Load payloads from level file
-  fetch(`${level}.txt`)
-    .then((response) => response.text())
-    .then((text) => {
-      payloads.push(...text.split("\n").filter((line) => line.trim()));
-
-      // Run tests sequentially
-      runTests(profile, payloads);
-    });
-}
-
-async function runTests(profile, payloads) {
-  for (let i = 0; i < payloads.length; i++) {
-    if (!isTesting) break;
-
-    const payload = payloads[i];
-    const curlCommand = tests[profile].curlInput.replace("XSS", payload);
-
-    try {
-      const result = await sendCurl(curlCommand);
-
-      tests[profile].tested++;
-      if (result.includes(payload)) {
-        tests[profile].found++;
-        tests[profile].results.push({ payload, status: "found" });
-      } else {
-        tests[profile].results.push({ payload, status: "tested" });
-      }
-    } catch (error) {
-      tests[profile].results.push({ payload, status: "error", error: error.message });
-    }
-
-    saveTests(); // Persist data to storage
-  }
-
-  isTesting = false;
-}
-
-function cancelTest() {
-  isTesting = false;
-}
-
-function sendCurl(curlCommand) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const mockResponse = `Mock response for ${curlCommand}`;
-      resolve(mockResponse);
-    }, 200);
-  });
-}
-
-function saveTests() {
-  chrome.storage.local.set({ tests });
-}
-
-function loadTests() {
-  chrome.storage.local.get("tests", (data) => {
-    if (data.tests) {
-      tests = data.tests;
-    }
-  });
-}
-
-// Load previous tests on startup
-loadTests();
+// You could also listen for events like tab closed or activated, for additional functionality:
+// Example: Log when a tab is closed
+chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
+  console.log(`Tab with ID: ${tabId} was closed.`);
+});

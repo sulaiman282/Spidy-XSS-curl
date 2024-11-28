@@ -1,97 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Spidy XSS</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div class="popup-container">
-      <!-- Header -->
-      <div class="header">
-        <p>🕷 Spidy XSS 🕷</p>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spidy XSS</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="popup-container container">
+    <!-- Header -->
+    <div class="header">
+      <p>🕷 Spidy XSS 🕷</p>
+    </div>
+
+    <!-- Profile Tabs -->
+    <div class="profile-tabs">
+      <button class="profile-tab active" id="profile1">Profile 1</button>
+      <button class="profile-tab" id="profile2">Profile 2</button>
+      <button class="profile-tab" id="profile3">Profile 3</button>
+      <button class="profile-tab" id="profile4">Profile 4</button>
+      <button class="profile-tab" id="profile5">Profile 5</button>
+      <button class="profile-tab" id="profile6">Profile 6</button>
+      <button class="profile-tab" id="profile7">Profile 7</button>
+      <button class="profile-tab" id="profile8">Profile 8</button>
+      <button class="profile-tab" id="profile9">Profile 9</button>
+      <button class="profile-tab" id="profile10">Profile 10</button>
+    </div>
+
+
+    <div class="content">
+      <!-- Form Section -->
+      <div>
+        <p class="section-title">Enter curl as bash:</p>
+        <textarea id="curlInput" class="textarea" rows="2"
+          placeholder="Paste your copied curl here. NB: Curl should have a payload value XSS."></textarea>
+        <p id="error" class="error hidden">"XSS" value not found</p>
+
+        <!-- Options -->
+        <div class="section">
+          <p class="section-title">Concurrent Request Count:</p>
+          <div class="options">
+            <button class="option concurrent-option" data-value="1">1</button>
+            <button class="option concurrent-option" data-value="2">2</button>
+            <button class="option concurrent-option" data-value="3">3</button>
+            <button class="option concurrent-option" data-value="4">4</button>
+            <button class="option concurrent-option" data-value="5">5</button>
+            <button class="option concurrent-option" data-value="6">6</button>
+            <button class="option concurrent-option" data-value="7">7</button>
+            <button class="option concurrent-option" data-value="8">8</button>
+            <button class="option concurrent-option" data-value="9">9</button>
+            <button class="option concurrent-option" data-value="10">10</button>
+          </div>
+        </div>
+
+        <div class="section mb-5">
+          <p class="section-title">Select Test Level:</p>
+          <div class="options">
+            <button class="option level-option" data-level="basic">Basic</button>
+            <button class="option level-option" data-level="medium">Medium</button>
+            <button class="option level-option" data-level="advanced">Advanced</button>
+          </div>
+        </div>
       </div>
 
-      <!-- Profile Tabs -->
-      <div class="profile-tabs">
-        <button class="profile-tab active" id="profile1">Profile 1</button>
-        <button class="profile-tab" id="profile2">Profile 2</button>
-        <button class="profile-tab" id="profile3">Profile 3</button>
-        <button class="profile-tab" id="profile4">Profile 4</button>
-        <button class="profile-tab" id="profile5">Profile 5</button>
-      </div>
-
-      <div class="content">
-        <!-- Form Section -->
+      <!-- Live Results -->
+      <div class="results mb-5">
+        <div class="status">
+          <p>
+            <strong>Current Status:</strong>
+            <span id="testStatus">Not Started</span>
+          </p>
+          <p>
+            <strong>Stats:</strong> Found: <span id="foundCount">0</span> /
+            Tested: <span id="testedCount">0</span>
+          </p>
+        </div>
         <div>
-          <p class="section-title">Enter curl as bash:</p>
-          <textarea
-            id="curlInput"
-            class="textarea"
-            rows="2"
-            placeholder="Paste your copied curl here. NB: Curl should have a payload value XSS."
-          ></textarea>
-          <p id="error" class="error hidden">"XSS" value not found</p>
-
-          <!-- Options -->
-          <div class="section">
-            <p class="section-title">Concurrent Request Count:</p>
-            <div class="options">
-              <button class="option concurrent-option" data-value="1">1</button>
-              <button class="option concurrent-option" data-value="2">2</button>
-              <button class="option concurrent-option" data-value="4">4</button>
-              <button class="option concurrent-option" data-value="8">8</button>
-              <button class="option concurrent-option" data-value="16">
-                16
-              </button>
-            </div>
-          </div>
-
-          <div class="section mb-5">
-            <p class="section-title">Select Test Level:</p>
-            <div class="options">
-              <button class="option level-option" data-level="basic">
-                Basic
-              </button>
-              <button class="option level-option" data-level="medium">
-                Medium
-              </button>
-              <button class="option level-option" data-level="advanced">
-                Advanced
-              </button>
-            </div>
-          </div>
+          <pre id="liveResults" class="live-results"></pre>
         </div>
-
-        <!-- Live Results -->
-        <div class="results mb-5">
-          <div class="status">
-            <p>
-              <strong>Current Status:</strong>
-              <span id="testStatus">Not Started</span>
-            </p>
-            <p>
-              <strong>Stats:</strong> Found: <span id="foundCount">0</span> /
-              Tested: <span id="testedCount">0</span>
-            </p>
-          </div>
-          <div><pre id="liveResults" class="live-results"></pre></div>
-        </div>
-      </div>
-
-      <!-- Footer -->
-      <div class="footer">
-        <button id="cancelBtn" class="footer-btn stop-btn hidden">
-          Cancel
-        </button>
-        <button id="downloadBtn" class="footer-btn start-btn hidden">
-          Download
-        </button>
-        <button id="startBtn" class="footer-btn start-btn">Start</button>
       </div>
     </div>
 
-    <script src="popup.js"></script>
-  </body>
+    <!-- Footer -->
+    <div class="footer">
+      <button id="cancelBtn" class="footer-btn stop-btn hidden">Cancel</button>
+      <button id="downloadBtn" class="footer-btn start-btn hidden">Download</button>
+      <button id="startBtn" class="footer-btn start-btn">Start</button>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+
 </html>
